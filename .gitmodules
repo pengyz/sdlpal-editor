@@ -1,0 +1,6 @@
+[submodule "3rd/SDL"]
+	path = 3rd/SDL
+	url = git@github.com:libsdl-org/SDL.git
+[submodule "3rd/imgui"]
+	path = 3rd/imgui
+	url = git@github.com:ocornut/imgui.git

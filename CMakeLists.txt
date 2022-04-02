@@ -7,7 +7,11 @@ set(CMAKE_CXX_STANDARD 20)
 # include(CTest)
 # enable_testing()
 
+set(BUILD_SHARED_LIBS OFF)
+set(WITH_GFLAGS OFF)
+set(WITH_GTEST OFF)
 add_subdirectory(3rd/SDL EXCLUDE_FROM_ALL)
+add_subdirectory(3rd/glog EXCLUDE_FROM_ALL)
 
 add_library(imgui_sdlrenderer STATIC
     ${CMAKE_SOURCE_DIR}/3rd/imgui/backends/imgui_impl_sdlrenderer.cpp
@@ -36,7 +40,7 @@ target_link_libraries(imgui_sdlrenderer PUBLIC
     SDL2main
 )
 
-file(GLOB MKF_FILES CONFIGURE_DEPENDS "src/mkf/*.h" "src/mkf/*.cpp")
+file(GLOB ENGINE_FILES CONFIGURE_DEPENDS "src/engine/*.h" "src/engine/*.cpp")
 
 file(GLOB FRAMEWORK_FILES CONFIGURE_DEPENDS "src/framework/*.h" "src/framework/*.cpp")
 
@@ -46,12 +50,13 @@ file(GLOB GUI_FILES CONFIGURE_DEPENDS "src/gui/*.h" "src/gui/*.cpp")
 add_executable(sdlpal-editor 
     ${FRAMEWORK_FILES}
     ${GUI_FILES}
-    ${MKF_FILES}
+    ${ENGINE_FILES}
     src/main.cpp
 )
 
 target_link_libraries(sdlpal-editor PRIVATE
     imgui_sdlrenderer
+    glog
 )
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

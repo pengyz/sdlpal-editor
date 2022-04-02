@@ -2,22 +2,21 @@
 #include <filesystem>
 #include <fstream>
 
+namespace engine {
+
 /**
  * @brief mkf resource file
  *
  */
 class MKFFile {
  public:
-  enum class DecompressType {
-    none,  // 无效值
-    yj1,   // dos加密
-    yj2    // win95加密
-  };
   //只允许移动构造
   MKFFile(const MKFFile&) = delete;
   MKFFile& operator=(const MKFFile&) = delete;
 
-  MKFFile(const DecompressType& decompType);
+  MKFFile();
+  MKFFile(const std::filesystem::path& path);
+
   ~MKFFile();
   MKFFile(MKFFile&& other);
   MKFFile& operator=(MKFFile&& other);
@@ -36,6 +35,16 @@ class MKFFile {
    *
    */
   void close();
+
+  /**
+   * @brief 是否已经打开
+   *
+   * @return true
+   * @return false
+   */
+  bool is_open();
+
+  operator bool() { return is_open(); }
 
   /**
    * @brief Get the number of chunks in an MKF archive.
@@ -88,5 +97,6 @@ class MKFFile {
 
  private:
   std::ifstream ifs;
-  DecompressType _type = DecompressType::none;
 };
+
+}  // namespace engine

@@ -1,17 +1,20 @@
 #include "mkf.h"
 #include <SDL.h>
 #include <cassert>
-#include "../config.h"
+#include "engine.h"
 #include "yj1.h"
 
-// TODO: 给一个假的版本信息
-GameConfig gConfig;
+namespace engine {
 
 #define PAL_fread(buf) \
   ifs >> buf;          \
   if (ifs.fail()) return -1;
 
-MKFFile::MKFFile(const MKFFile::DecompressType& decompType) : _type(decompType) {}
+MKFFile::MKFFile() {}
+
+MKFFile::MKFFile(const std::filesystem::path& path) {
+  ifs = std::ifstream(path);
+}
 
 MKFFile::~MKFFile() { close(); }
 MKFFile::MKFFile(MKFFile&& other) { ifs = std::move(other.ifs); }
@@ -26,6 +29,8 @@ bool MKFFile::open(const std::filesystem::path& path) {
   if (ifs.fail()) return false;
   return true;
 }
+
+bool MKFFile::is_open() { return ifs.is_open(); }
 
 void MKFFile::close() {
   if (ifs.is_open()) ifs.close();
@@ -140,7 +145,7 @@ int32_t MKFFile::getDecompressedSize(uint32_t uiChunkNum) {
   // Read the header.
   //
   ifs.seekg(uiOffset);
-  if (gConfig.fIsWIN95) {
+  if (Engine::isWin95()) {
     PAL_fread(buf[0]);
     buf[0] = SDL_SwapLE32(buf[0]);
 
@@ -170,13 +175,13 @@ int32_t MKFFile::decompressChunk(uint8_t* lpBuffer, uint32_t uiBufferSize, uint3
 
   readChunk(buf, len, uiChunkNum);
 
-  if (_type == DecompressType::yj1)
-    len = YJ1_Decompress(buf, lpBuffer, uiBufferSize);
-  else if (_type == DecompressType::yj2)
+  if (Engine::isWin95())
     len = YJ2_Decompress(buf, lpBuffer, uiBufferSize);
   else
-    assert(false && "invalid compress type !");
+    len = YJ1_Decompress(buf, lpBuffer, uiBufferSize);
   free(buf);
 
   return len;
 }
+
+}  // namespace engine

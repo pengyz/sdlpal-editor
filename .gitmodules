@@ -4,3 +4,6 @@
 [submodule "3rd/imgui"]
 	path = 3rd/imgui
 	url = git@github.com:ocornut/imgui.git
+[submodule "3rd/glog"]
+	path = 3rd/glog
+	url = git@github.com:google/glog.git

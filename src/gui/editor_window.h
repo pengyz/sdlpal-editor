@@ -12,6 +12,15 @@ class EditorWindow : public Window {
 
   virtual bool init() override;
 
+protected:
+    /**
+     * @brief 初始化imgui
+     * 
+     * @return true 
+     * @return false 
+     */
+    bool _initImGui();
+
 private:
     bool _show_demo_window = true;
 };

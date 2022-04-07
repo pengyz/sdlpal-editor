@@ -1,20 +1,16 @@
 #include "editor_window.h"
+#include <SDL.h>
 #include "../log.h"
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_sdlrenderer.h"
 
-EditorWindow::EditorWindow(int width, int height, const std::string& title)
-    : Window(width, height, title) {}
+namespace editor {
 
-EditorWindow::~EditorWindow() {
-  ImGui_ImplSDLRenderer_Shutdown();
-  ImGui_ImplSDL2_Shutdown();
-  ImGui::DestroyContext();
+EditorWindow::EditorWindow(SDL_Renderer* renderer, int width, int height, const std::string& title)
+    : Window(width, height, title), _renderer(renderer) {}
 
-  SDL_DestroyRenderer(_renderer);
-  _renderer = nullptr;
-}
+EditorWindow::~EditorWindow() {}
 
 void EditorWindow::render() {
   //渲染
@@ -36,20 +32,12 @@ bool EditorWindow::init() {
 
 bool EditorWindow::_initImGui() {
   // Setup SDL_Renderer instance
-  _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_PRESENTVSYNC | SDL_RENDERER_ACCELERATED);
-  if (_renderer == NULL) {
-    SDL_Log("Error creating SDL_Renderer!");
-    return false;
-  }
   SDL_RendererInfo info;
   SDL_GetRendererInfo(_renderer, &info);
   SDL_Log("Current SDL_Renderer: %s", info.name);
 
   // Setup Dear ImGui context
-  IMGUI_CHECKVERSION();
-  ImGui::CreateContext();
   ImGuiIO& io = ImGui::GetIO();
-  (void)io;
   io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
   // io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
   // io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
@@ -59,7 +47,7 @@ bool EditorWindow::_initImGui() {
   // ImGui::StyleColorsClassic();
 
   // Setup Platform/Renderer backends
-  ImGui_ImplSDL2_InitForSDLRenderer(_window, _renderer);
+  ImGui_ImplSDL2_InitForSDLRenderer(SDL_RenderGetWindow(_renderer), _renderer);
   ImGui_ImplSDLRenderer_Init(_renderer);
 
   // Load Fonts
@@ -88,3 +76,4 @@ bool EditorWindow::_initImGui() {
 
   return true;
 }
+}  // namespace editor

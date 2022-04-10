@@ -12,6 +12,7 @@ set(WITH_GFLAGS OFF)
 set(WITH_GTEST OFF)
 add_subdirectory(3rd/SDL EXCLUDE_FROM_ALL)
 add_subdirectory(3rd/glog EXCLUDE_FROM_ALL)
+add_subdirectory(3rd/stb_image EXCLUDE_FROM_ALL)
 
 add_library(imgui_sdlrenderer STATIC
     ${CMAKE_SOURCE_DIR}/3rd/imgui/backends/imgui_impl_sdlrenderer.cpp
@@ -55,6 +56,7 @@ add_executable(sdlpal-editor
 target_link_libraries(sdlpal-editor PRIVATE
     imgui_sdlrenderer
     glog
+    stb_image
 )
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

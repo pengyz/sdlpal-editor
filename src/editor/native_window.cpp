@@ -1,6 +1,6 @@
 #include "native_window.h"
 #include <cassert>
-#include "../editor/editor_window.h"
+#include "../editor/file_panel.h"
 #include "../editor/window.h"
 #include "../log.h"
 #include "SDL.h"
@@ -30,11 +30,14 @@ bool NativeWindow::init() {
     return false;
   }
   //创建窗口
-  createImGuiWindow<EditorWindow>("editor", 800, 600, "Editor");
+  createImGuiPanel<FilePanel>("FilePanel", 800, 600, "文件");
   return true;
 }
 
 void NativeWindow::render() {
+  //主窗口菜单项
+  _painMainMenuBar();
+
   //渲染
   if (_show_demo_window) {
     ImGui::ShowDemoWindow(&_show_demo_window);
@@ -42,7 +45,12 @@ void NativeWindow::render() {
   //创建dock space
   ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
-  //主窗口菜单项
+  for (auto w : _imgui_panels) {
+    if (w.second->visible()) w.second->render();
+  }
+}
+
+void NativeWindow::_painMainMenuBar() {
   if (ImGui::BeginMainMenuBar()) {
     if (ImGui::BeginMenu("File")) {
       if (ImGui::MenuItem("Open File", "Alt + o", nullptr)) {
@@ -53,10 +61,28 @@ void NativeWindow::render() {
       }
       ImGui::EndMenu();
     }
+    if(ImGui::BeginMenu("Layout")) {
+      if(ImGui::MenuItem("Reset", "Alt + r", nullptr)) {
+        LOG(INFO) << "Reset all panels !";
+      }
+      if(ImGui::IsItemHovered()) {
+        ImGui::SetTooltip("Reset all editor panels");
+      }
+      if(ImGui::MenuItem("File Panel", "Alt + f", &_model._file_panel)) {
+        LOG(INFO) << "Reset all panels !";
+        if(_model._file_panel && !_imgui_panels["FilePanel"]->visible()) {
+          _imgui_panels["FilePanel"]->visible(true);
+        } else if(!_model._file_panel && _imgui_panels["FilePanel"]->visible()) {
+          _imgui_panels["FilePanel"]->visible(false);
+        }
+      }
+      if(ImGui::IsItemHovered()) {
+        ImGui::SetTooltip("Reset all editor panels");
+      }
+      ImGui::EndMenu();
+    }
+    
     ImGui::EndMainMenuBar();
-  }
-  for (auto w : _imgui_windows) {
-    if (w.second->visible()) w.second->render();
   }
 }
 
@@ -111,10 +137,10 @@ bool NativeWindow::_initImGui() {
 }
 
 NativeWindow::~NativeWindow() {
-  for (const auto& pair : _imgui_windows) {
+  for (const auto& pair : _imgui_panels) {
     delete pair.second;
   }
-  _imgui_windows.clear();
+  _imgui_panels.clear();
   ImGui::DestroyContext();
 
   ImGui_ImplSDLRenderer_Shutdown();

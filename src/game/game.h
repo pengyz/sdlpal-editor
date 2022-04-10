@@ -19,13 +19,6 @@ class Game {
   Game();
   ~Game();
   /**
-   * @brief 加载资源文件
-   *
-   * @return true
-   * @return false
-   */
-  bool loadResources();
-  /**
    * @brief 初始化
    *
    * @return true

@@ -4,10 +4,10 @@ struct SDL_Renderer;
 
 namespace editor {
 
-class EditorWindow : public Window {
+class FilePanel : public Window {
  public:
-  EditorWindow(int width, int height, const std::string& title);
-  ~EditorWindow();
+  FilePanel(int width, int height, const std::string& title);
+  ~FilePanel();
   /**
    * @brief 渲染逻辑
    *

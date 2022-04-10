@@ -43,12 +43,14 @@ target_link_libraries(imgui_sdlrenderer PUBLIC
 
 file(GLOB EDITOR_FILES CONFIGURE_DEPENDS "src/editor/*.h" "src/editor/*.cpp")
 file(GLOB ENGINE_FILES CONFIGURE_DEPENDS "src/engine/*.h" "src/engine/*.cpp")
+file(GLOB RENDER_FILES CONFIGURE_DEPENDS "src/engine/render/*.h" "src/engine/render/*.cpp")
 file(GLOB GAME_FILES CONFIGURE_DEPENDS "src/game/*.h" "src/game/*.cpp")
 
 
 add_executable(sdlpal-editor 
     ${EDITOR_FILES}
     ${ENGINE_FILES}
+    ${RENDER_FILES}
     ${GAME_FILES}
     src/main.cpp
 )

@@ -1,6 +1,10 @@
 #pragma once
 #include "SDL.h"
 
+namespace render {
+  class RenderBackend;
+}
+
 namespace engine {
 
 /**
@@ -13,7 +17,8 @@ class Renderer {
   bool init();
   ~Renderer() = default;
 
-  private:
+ private:
   SDL_Surface* _logicScreen;
+  render::RenderBackend* _backend = nullptr;  //backend
 };
 }  // namespace engine

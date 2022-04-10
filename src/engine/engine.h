@@ -1,5 +1,7 @@
 #pragma once
+#include <array>
 #include <filesystem>
+#include "SDL.h"
 #include "mkf.h"
 
 namespace engine {
@@ -14,6 +16,8 @@ struct MkfFiles {
   engine::MKFFile rgm;
   engine::MKFFile sss;
 };
+
+using Palette = std::array<SDL_Color, 256>;
 
 /**
  * @brief 引擎抽象类
@@ -39,7 +43,6 @@ class Engine {
    */
   bool init();
 
- private:
   /**
    * @brief 加载文件
    *
@@ -50,6 +53,16 @@ class Engine {
    */
   bool loadMKFFile(const std::filesystem::path& path, MKFFile& file);
 
+  /**
+   * @brief Get the specified palette in pat.mkf file.
+   *
+   * @param iPaletteNum number of the palette.
+   * @param fNight whether use the night palette or not.
+   * @return SDL_Color* Pointer to the palette. NULL if failed.
+   */
+  SDL_Color* getPalette(int32_t iPaletteNum, bool fNight);
+
+ private:
   /**
    * @brief 初始化log
    *
@@ -73,6 +86,8 @@ class Engine {
   char** _argv = nullptr;
   std::filesystem::path _resourcePath;
 
+  Palette _palette;
+public: //Note: temporary give public for _files
   MkfFiles _files;
 };
 }  // namespace engine

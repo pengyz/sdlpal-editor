@@ -3,10 +3,12 @@
 #include <map>
 #include "../engine/engine.h"
 #include "../engine/mkf.h"
-#include "native_window.h"
+
+namespace editor {
+class NativeWindow;
+}
 
 namespace pal {
-class NativeWindow;
 
 /**
  * @brief 游戏类
@@ -49,6 +51,6 @@ class Game {
 
  private:
   engine::MkfFiles _files;
-  NativeWindow* _gameWindow = nullptr;
+  editor::NativeWindow* _gameWindow = nullptr;
 };
 }  // namespace pal

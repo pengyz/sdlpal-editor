@@ -88,4 +88,40 @@ bool Engine::_loadResources() {
   return true;
 }
 
+SDL_Color* Engine::getPalette(int32_t iPaletteNum, bool fNight) {
+  std::array<uint8_t, 1536> buf;
+  //   INT i;
+
+  MKFFile _pat;
+  if (!loadMKFFile("pat.mkf", _pat)) {
+    LOG(ERROR) << "load pat.mkf failed !";
+    return nullptr;
+  }
+
+  // Read the palette data from the pat.mkf file
+  int32_t i = _pat.readChunk(&buf[0], buf.size(), iPaletteNum);
+  _pat.close();
+
+  if (i < 0) {
+    // Read failed
+    return nullptr;
+  } else if (i <= 256 * 3) {
+    // There is no night colors in the palette
+    fNight = false;
+  }
+
+  for (i = 0; i < 256; i++) {
+    _palette[i].r = buf[(fNight ? 256 * 3 : 0) + i * 3] << 2;
+    _palette[i].g = buf[(fNight ? 256 * 3 : 0) + i * 3 + 1] << 2;
+    _palette[i].b = buf[(fNight ? 256 * 3 : 0) + i * 3 + 2] << 2;
+#if 0
+      palette[i].r += (255 - palette[i].r) / 5;
+      palette[i].g += (255 - palette[i].g) / 5;
+      palette[i].b += (255 - palette[i].b) / 5;
+#endif
+  }
+
+  return &_palette[0];
+}
+
 }  // namespace engine

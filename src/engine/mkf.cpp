@@ -7,7 +7,7 @@
 namespace engine {
 
 #define PAL_fread(buf) \
-  ifs >> buf;          \
+  ifs.read((char*)&buf, sizeof(buf));          \
   if (ifs.fail()) return -1;
 
 MKFFile::MKFFile() {}
@@ -40,7 +40,7 @@ uint32_t MKFFile::getChunkCount() {
   assert(ifs.is_open() && "please open file first !");
   uint32_t iNumChunk = 0;
   ifs.seekg(0);
-  ifs >> iNumChunk;
+  ifs.read((char*)&iNumChunk, sizeof(iNumChunk));
   if (ifs.fail()) {
     return 0u;
   }
@@ -168,7 +168,7 @@ int32_t MKFFile::decompressChunk(uint8_t* lpBuffer, uint32_t uiBufferSize, uint3
     return len;
   }
 
-  uint8_t* buf = (uint8_t*)malloc(len);
+  uint8_t* buf = new uint8_t[len];
   if (buf == nullptr) {
     return -3;
   }
@@ -179,7 +179,7 @@ int32_t MKFFile::decompressChunk(uint8_t* lpBuffer, uint32_t uiBufferSize, uint3
     len = YJ2_Decompress(buf, lpBuffer, uiBufferSize);
   else
     len = YJ1_Decompress(buf, lpBuffer, uiBufferSize);
-  free(buf);
+  delete[] buf;
 
   return len;
 }

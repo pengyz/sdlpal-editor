@@ -1,12 +1,11 @@
 #include "game.h"
 #include <SDL.h>
 #include <cassert>
-#include "../editor/editor_window.h"
+#include "../editor/native_window.h"
 #include "../log.h"
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_sdlrenderer.h"
-#include "native_window.h"
 
 namespace pal {
 
@@ -38,10 +37,7 @@ bool Game::init() {
 }
 
 bool Game::_initGameWindow() {
-  _gameWindow = new NativeWindow(1024, 768, "sdlpal editor");
-  auto editor_game_window =
-      _gameWindow->createImGuiWindow<editor::EditorWindow>("game-window", 320, 200, "game");
-  assert(editor_game_window);
+  _gameWindow = new editor::NativeWindow(1024, 768, "sdlpal editor");
   return true;
 }
 
@@ -63,26 +59,24 @@ int Game::run() {
       ImGui_ImplSDL2_ProcessEvent(&event);
       if (event.type == SDL_QUIT) done = true;
       if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE &&
-          event.window.windowID == SDL_GetWindowID(_gameWindow->_window))
+          event.window.windowID == SDL_GetWindowID(_gameWindow->window()))
         done = true;
     }
-    if (_gameWindow->_renderer) {
-      // Start the Dear ImGui frame
-      ImGui_ImplSDLRenderer_NewFrame();
-      ImGui_ImplSDL2_NewFrame();
-      ImGui::NewFrame();
+    // Start the Dear ImGui frame
+    ImGui_ImplSDLRenderer_NewFrame();
+    ImGui_ImplSDL2_NewFrame();
+    ImGui::NewFrame();
 
-      // render imgui windows
-      _gameWindow->renderImGui();
+    // render imgui windows
+    _gameWindow->render();
 
-      // Rendering
-      ImGui::Render();
-      _gameWindow->erase(clear_color.x * 255, clear_color.y * 255, clear_color.z * 255,
-                         clear_color.z * 255);
-      ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
+    // Rendering
+    ImGui::Render();
+    _gameWindow->erase(clear_color.x * 255, clear_color.y * 255, clear_color.z * 255,
+                       clear_color.z * 255);
+    ImGui_ImplSDLRenderer_RenderDrawData(ImGui::GetDrawData());
 
-      _gameWindow->present();
-    }
+    _gameWindow->present();
   }
   return 0;
 }

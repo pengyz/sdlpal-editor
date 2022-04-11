@@ -49,38 +49,39 @@ SDL_Texture *SDL2_Backend::CreateTexture(int width, int height) {
   //
   // Create texture for screen.
   //
-  return SDL_CreateTexture(renderer(), SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
-                           texture_width, texture_height);
+  texture(SDL_CreateTexture(renderer(), SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
+                            texture_width, texture_height));
+  return texture();
 }
 
 void SDL2_Backend::RenderCopy() {
-    //TODO: 不需要copy 使用ImGui Image进行合成
-//   void *texture_pixels;
-//   int texture_pitch;
+  // TODO: 不需要copy 使用ImGui Image进行合成
+  //   void *texture_pixels;
+  //   int texture_pitch;
 
-//   SDL_LockTexture(texture(), NULL, &texture_pixels, &texture_pitch);
-//   memset(texture_pixels, 0, textureRect()->y * texture_pitch);
-//   uint8_t *pixels = (uint8_t *)texture_pixels + textureRect()->y * texture_pitch;
-//   uint8_t *src = (uint8_t *)gpScreenReal->pixels;
-//   int left_pitch = textureRect()->x << 2;
-//   int right_pitch = texture_pitch - ((textureRect()->x + textureRect()->w) << 2);
-//   for (int y = 0; y < textureRect()->h; y++, src += gpScreenReal->pitch) {
-//     memset(pixels, 0, left_pitch);
-//     pixels += left_pitch;
-//     memcpy(pixels, src, 320 << 2);
-//     pixels += 320 << 2;
-//     memset(pixels, 0, right_pitch);
-//     pixels += right_pitch;
-//   }
-//   memset(pixels, 0, textureRect()->y * texture_pitch);
-//   SDL_UnlockTexture(texture());
+  //   SDL_LockTexture(texture(), NULL, &texture_pixels, &texture_pitch);
+  //   memset(texture_pixels, 0, textureRect()->y * texture_pitch);
+  //   uint8_t *pixels = (uint8_t *)texture_pixels + textureRect()->y * texture_pitch;
+  //   uint8_t *src = (uint8_t *)gpScreenReal->pixels;
+  //   int left_pitch = textureRect()->x << 2;
+  //   int right_pitch = texture_pitch - ((textureRect()->x + textureRect()->w) << 2);
+  //   for (int y = 0; y < textureRect()->h; y++, src += gpScreenReal->pitch) {
+  //     memset(pixels, 0, left_pitch);
+  //     pixels += left_pitch;
+  //     memcpy(pixels, src, 320 << 2);
+  //     pixels += 320 << 2;
+  //     memset(pixels, 0, right_pitch);
+  //     pixels += right_pitch;
+  //   }
+  //   memset(pixels, 0, textureRect()->y * texture_pitch);
+  //   SDL_UnlockTexture(texture());
 
-//   SDL_RenderClear(renderer());
-//   SDL_RenderCopy(renderer(), texture(), NULL, NULL);
-//   if (gConfig.fUseTouchOverlay) {
-//     SDL_RenderCopy(renderer(), gpTouchOverlay, NULL, &gOverlayRect);
-//   }
-//   SDL_RenderPresent(renderer());
+  //   SDL_RenderClear(renderer());
+  //   SDL_RenderCopy(renderer(), texture(), NULL, NULL);
+  //   if (gConfig.fUseTouchOverlay) {
+  //     SDL_RenderCopy(renderer(), gpTouchOverlay, NULL, &gOverlayRect);
+  //   }
+  //   SDL_RenderPresent(renderer());
 }
 
 }  // namespace render

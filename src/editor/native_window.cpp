@@ -123,7 +123,7 @@ bool NativeWindow::_initImGui() {
   // - Remember that in C/C++ if you want to include a backslash \ in a string literal you need to
   // write a double backslash \\ !
   io.Fonts->AddFontDefault();
-  auto font = io.Fonts->AddFontFromFileTTF("../resources/wqy-micro-hei-mono.ttf", 14, nullptr,
+  auto font = io.Fonts->AddFontFromFileTTF("./resources/wqy-micro-hei-mono.ttf", 14, nullptr,
                                            io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
   IM_ASSERT(font != nullptr);
   io.FontDefault = font;

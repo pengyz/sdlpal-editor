@@ -8,7 +8,7 @@
 
 int main(int argc, char** argv) {
   engine::Engine engine(argc, argv);
-  engine.setResourcePath(u8"../resources/pal/");
+  engine.setResourcePath(u8"./resources/pal/");
   bool bOk = engine.init();
   if (!bOk) {
     LOG(FATAL) << "engine init failed !";

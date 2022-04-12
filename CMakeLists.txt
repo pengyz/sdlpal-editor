@@ -3,6 +3,8 @@ project(sdlpal-editor VERSION 0.1.0)
 
 # use the lastest standard
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/lib)
 
 # include(CTest)
 # enable_testing()
@@ -64,3 +66,7 @@ target_link_libraries(sdlpal-editor PRIVATE
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
+
+add_custom_command(TARGET sdlpal-editor POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/resources $<TARGET_FILE_DIR:sdlpal-editor>/bin/resources
+)

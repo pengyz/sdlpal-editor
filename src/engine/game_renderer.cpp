@@ -24,7 +24,6 @@ bool GameRenderer::init(int width, int height) {
 SDL_Texture* GameRenderer::texture() { return _backend->texture(); }
 
 void GameRenderer::fillRect(SDL_Colour color, const SDL_Rect& rect) {
-  SDL_Texture* tex = _backend->texture();
   SDL_SetRenderTarget(_backend->renderer(), _backend->texture());
   SDL_SetRenderDrawColor(_backend->renderer(), color.r, color.g, color.b, color.a);
   SDL_RenderFillRect(_backend->renderer(), &rect);

@@ -17,13 +17,15 @@ void GamePanel::render() {
   ImGui::SetNextWindowSize(ImVec2(_width, _height), ImGuiCond_FirstUseEver);
   //创建背景窗口
   if (ImGui::Begin(_title.c_str(), nullptr)) {
-    ImGui::Image((ImTextureID)_renderer->texture(), ImVec2(320.0, 200.0));
+    int w = 0, h = 0;
+    SDL_QueryTexture(_renderer->texture(), nullptr, nullptr, &w, &h);
+    ImGui::Image((ImTextureID)_renderer->texture(), {(float)w * 2.0f, (float)h * 2.0f});
   }
   ImGui::End();
 }
 
 bool GamePanel::init() {
-  _renderer->fillRect(SDL_Colour(255, 0, 0, 0), {0, 0, 100, 100});
+  _renderer->fillRect({255, 0, 0, 0}, {0, 0, 100, 100});
   return true;
 }
 

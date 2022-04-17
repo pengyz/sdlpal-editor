@@ -9,7 +9,7 @@
             "request": "launch",
             "type": "cppdbg",
             "program": "${workspaceFolder}/build/sdlpal-editor",
-            "cwd": "${workspaceFolder}/build",
+            "cwd": "${workspaceFolder}/",
             "args": [],
             "environment": [],
             "externalConsole": false,

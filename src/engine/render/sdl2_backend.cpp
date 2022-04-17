@@ -47,9 +47,9 @@ SDL_Texture *SDL2_Backend::CreateTexture(int width, int height) {
   }
 
   //
-  // Create texture for screen.
+  // Create texture for screen as a render target
   //
-  texture(SDL_CreateTexture(renderer(), SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING,
+  texture(SDL_CreateTexture(renderer(), SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_TARGET,
                             texture_width, texture_height));
   return texture();
 }

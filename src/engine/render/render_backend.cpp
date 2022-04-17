@@ -3,7 +3,9 @@
 
 namespace render {
 RenderBackend::RenderBackend(SDL_Renderer* renderer, bool bKeepAspectRatio)
-    : _renderer(renderer), _bKeepAspectRatio(bKeepAspectRatio) {}
+    : _renderer(renderer), _bKeepAspectRatio(bKeepAspectRatio) {
+  _textureRect = new SDL_Rect{0, 0, 0, 0};
+}
 RenderBackend::~RenderBackend() {
   if (_textureRect) {
     delete _textureRect;

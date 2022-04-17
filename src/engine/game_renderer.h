@@ -11,10 +11,10 @@ namespace engine {
  * @brief 渲染器
  *
  */
-class Renderer {
+class GameRenderer {
  public:
-  Renderer(SDL_Renderer* renderer);
-  ~Renderer();
+  GameRenderer(SDL_Renderer* renderer);
+  ~GameRenderer();
   /**
    * @brief 初始化
    *
@@ -31,6 +31,14 @@ class Renderer {
    * @return SDL_Texture*
    */
   SDL_Texture* texture();
+
+  /**
+   * @brief 颜色填充
+   * 
+   * @param color 
+   * @param rect 
+   */
+  void fillRect(SDL_Colour color, const SDL_Rect& rect);
 
  private:
   SDL_Surface* _logicScreen;

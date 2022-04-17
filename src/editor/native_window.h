@@ -9,6 +9,10 @@ struct SDL_Window;
 struct SDL_Renderer;
 union SDL_Event;
 
+namespace engine {
+class GameRenderer;
+}
+
 namespace editor {
 
 /**
@@ -68,6 +72,7 @@ class NativeWindow : public Window {
   bool _show_demo_window = true;                         // 显示demo窗口
   SDL_Window* _window = nullptr;                         // SDL窗口
   SDL_Renderer* _renderer = nullptr;                     // 渲染器
+  engine::GameRenderer* _gameRender = nullptr;           // 游戏渲染器
   std::string _title;                                    // 标题
   EditorModel _model;                                    // ui model
   std::map<std::string, editor::Window*> _imgui_panels;  // imgui panels

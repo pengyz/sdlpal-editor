@@ -1,7 +1,9 @@
 #include "native_window.h"
 #include <cassert>
 #include "../editor/file_panel.h"
+#include "../editor/game_panel.h"
 #include "../editor/window.h"
+#include "../engine/game_renderer.h"
 #include "../log.h"
 #include "SDL.h"
 #include "imgui.h"
@@ -29,8 +31,17 @@ bool NativeWindow::init() {
     LOG(ERROR) << "initImGui failed !";
     return false;
   }
+  //初始化_gameRender
+  _gameRender = new engine::GameRenderer(_renderer);
+  bOk = _gameRender->init(320, 200);
+  if(!bOk) {
+    LOG(ERROR) << "init gameRenderer failed !";
+    return false;
+  }
+
   //创建窗口
   createImGuiPanel<FilePanel>("FilePanel", 800, 600, "文件");
+  createImGuiPanel<GamePanel>("GamePanel", _gameRender, 320, 200, "sdlpal");
   return true;
 }
 
@@ -61,27 +72,27 @@ void NativeWindow::_painMainMenuBar() {
       }
       ImGui::EndMenu();
     }
-    if(ImGui::BeginMenu("Layout")) {
-      if(ImGui::MenuItem("Reset", "Alt + r", nullptr)) {
+    if (ImGui::BeginMenu("Layout")) {
+      if (ImGui::MenuItem("Reset", "Alt + r", nullptr)) {
         LOG(INFO) << "Reset all panels !";
       }
-      if(ImGui::IsItemHovered()) {
+      if (ImGui::IsItemHovered()) {
         ImGui::SetTooltip("Reset all editor panels");
       }
-      if(ImGui::MenuItem("File Panel", "Alt + f", &_model._file_panel)) {
+      if (ImGui::MenuItem("File Panel", "Alt + f", &_model._file_panel)) {
         LOG(INFO) << "Reset all panels !";
-        if(_model._file_panel && !_imgui_panels["FilePanel"]->visible()) {
+        if (_model._file_panel && !_imgui_panels["FilePanel"]->visible()) {
           _imgui_panels["FilePanel"]->visible(true);
-        } else if(!_model._file_panel && _imgui_panels["FilePanel"]->visible()) {
+        } else if (!_model._file_panel && _imgui_panels["FilePanel"]->visible()) {
           _imgui_panels["FilePanel"]->visible(false);
         }
       }
-      if(ImGui::IsItemHovered()) {
+      if (ImGui::IsItemHovered()) {
         ImGui::SetTooltip("Reset all editor panels");
       }
       ImGui::EndMenu();
     }
-    
+
     ImGui::EndMainMenuBar();
   }
 }

@@ -1,4 +1,7 @@
 build/
 .vscode
+bin/
+*.bmp
+*.ini
 
 

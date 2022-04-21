@@ -1,11 +1,15 @@
 #pragma once
 #include "SDL.h"
+#include <array>
 
 namespace render {
 class RenderBackend;
 }
 
 namespace engine {
+
+using PaletteColors = std::array<SDL_Color, 256>;
+
 
 /**
  * @brief 渲染器
@@ -34,14 +38,31 @@ class GameRenderer {
 
   /**
    * @brief 颜色填充
-   * 
-   * @param color 
-   * @param rect 
+   *
+   * @param color
+   * @param rect
    */
   void fillRect(SDL_Colour color, const SDL_Rect& rect);
 
+    /**
+   * @brief Get the specified palette in pat.mkf file.
+   *
+   * @param iPaletteNum number of the palette.
+   * @param fNight whether use the night palette or not.
+   * @return SDL_Color* Pointer to the palette. NULL if failed.
+   */
+  SDL_Color* getPalette(int32_t iPaletteNum, bool fNight);
+  /**
+   * @brief Set the palette of the screen.
+   * 
+   * @param rgPalette array of 256 colors.
+   */
+  void setPalette(SDL_Color rgPalette[256]);
+
  private:
+  PaletteColors _paletteColors;
   SDL_Surface* _logicScreen;
+  SDL_Palette* _palette;
   render::RenderBackend* _backend = nullptr;  // backend
   SDL_Renderer* _renderer = nullptr;          // renderer
 };

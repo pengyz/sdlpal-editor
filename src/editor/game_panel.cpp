@@ -25,7 +25,9 @@ void GamePanel::render() {
 }
 
 bool GamePanel::init() {
-  _renderer->fillRect({255, 0, 0, 0}, {0, 0, 100, 100});
+  for (int i = 0; i < 10; i++) {
+    _renderer->fillRect({Uint8(100 + 15 * i), Uint8(55 + 20 * i), Uint8(10 + 17 * i), 0}, {0, 0, 100 - 10 * i, 100 - 10 * i});
+  }
   return true;
 }
 

@@ -36,7 +36,7 @@ class RenderBackend {
  private:
   SDL_Renderer* _renderer = nullptr;  // renderer对象
   SDL_Rect* _textureRect = nullptr;   // rect对象
-  SDL_Texture* _texture = nullptr;    // 游戏纹理对象
+  SDL_Texture* _texture = nullptr;    // 游戏纹理对象 GPU纹理
   bool _bKeepAspectRatio = true;      // 是否保持宽高比
   int _textureWidth = 320;            // texture宽度
   int _textureHeight = 200;           // texture高度

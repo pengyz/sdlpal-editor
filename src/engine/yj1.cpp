@@ -26,7 +26,8 @@
 //
 
 #include "yj1.h"
-#include <SDL2/SDL.h>
+#include <SDL.h>
+#include <cstring>
 
 typedef struct _YJ1_TreeNode {
   unsigned char value;

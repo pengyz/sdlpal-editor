@@ -1,0 +1,13 @@
+{
+  "name": "sdlpal-editor",
+  "dependencies": [
+    {
+        "name": "imgui",
+        "features": [
+            "sdl3-renderer-binding"
+        ]
+    },
+    "glog",
+    "stb"
+  ]
+}

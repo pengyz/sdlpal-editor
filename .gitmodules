@@ -7,6 +7,3 @@
 [submodule "3rd/glog"]
 	path = 3rd/glog
 	url = git@github.com:google/glog.git
-[submodule "deps/vcpkg"]
-	path = deps/vcpkg
-	url = https://github.com/microsoft/vcpkg.git
